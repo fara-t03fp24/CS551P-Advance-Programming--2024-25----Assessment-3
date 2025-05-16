@@ -22,6 +22,7 @@ def app():
         
         test_response = EventResponse(
             EventID='TEST001',
+            AttackType='SQL Injection',  # Added this line
             DataExfiltrated='None',
             ThreatIntelligence='Test Intelligence',
             ResponseAction='Blocked'
