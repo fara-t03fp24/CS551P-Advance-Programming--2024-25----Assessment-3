@@ -31,9 +31,7 @@ def index() -> str:
     per_page: int = 50
     
     # Get events with pagination
-    events = CyberEvent.query.order_by(
-        desc(CyberEvent.EventID)
-    ).paginate(page=page, per_page=per_page, error_out=False)
+    events = CyberEvent.query.paginate(page=page, per_page=per_page, error_out=False)
     
     # Get statistics for the dashboard
     stats: Dict[str, int] = {

@@ -4,6 +4,7 @@ from config import config
 from app.models import db
 from flask_bootstrap import Bootstrap
 from app.utils.logger import logger
+from flask_migrate import Migrate
 
 # Set up Bootstrap for nice looking pages
 bootstrap = Bootstrap()
@@ -34,6 +35,7 @@ def create_app(config_name: str = 'default') -> Flask:
     # Set up our extra features
     db.init_app(app)        # Database connection
     bootstrap.init_app(app) # Nice looking templates
+    migrate = Migrate(app, db) # Flask-Migrate initialization
     
     # Add our page routes
     from app.routes.main import main_bp
