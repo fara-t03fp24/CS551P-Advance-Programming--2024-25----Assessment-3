@@ -1,0 +1,87 @@
+{# Macro for severity badges #}
+{% macro severity_badge(severity) %}
+    <span class="badge badge-{{ 'danger' if severity == 'High' 
+        else 'warning' if severity == 'Medium' 
+        else 'success' }}">
+        {{ severity }}
+    </span>
+{% endmacro %}
+
+{# Macro for stats cards #}
+{% macro stats_card(title, value, color) %}
+    <div class="card bg-{{ color }} text-{{ 'dark' if color == 'warning' else 'white' }}">
+        <div class="card-body text-center">
+            <h5 class="card-title">{{ title }}</h5>
+            <p class="h2">{{ value }}</p>
+        </div>
+    </div>
+{% endmacro %}
+
+{# Macro for pagination #}
+{% macro pagination(paginator, endpoint) %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center mb-0">
+            {% if paginator.has_prev %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for(endpoint, page=paginator.prev_num) }}">&laquo; Previous</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&laquo; Previous</span>
+                </li>
+            {% endif %}
+            
+            <li class="page-item disabled">
+                <span class="page-link">Page {{ paginator.page }} of {{ paginator.pages }}</span>
+            </li>
+            
+            {% if paginator.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for(endpoint, page=paginator.next_num) }}">Next &raquo;</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">Next &raquo;</span>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endmacro %}
+
+{# Macro for data tables #}
+{% macro data_table(headers, rows) %}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    {% for header in headers %}
+                        <th>{{ header }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                    <tr>
+                        {% for cell in row %}
+                            <td>{{ cell }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endmacro %}
+
+{# Macro for progress bars #}
+{% macro progress_bar(value, max_value, color="primary") %}
+    <div class="progress">
+        <div class="progress-bar bg-{{ color }}" 
+             role="progressbar" 
+             style="width: {{ (value / max_value * 100)|round }}%"
+             aria-valuenow="{{ value }}"
+             aria-valuemin="0"
+             aria-valuemax="{{ max_value }}">
+            {{ (value / max_value * 100)|round }}%
+        </div>
+    </div>
+{% endmacro %}

@@ -1,9 +1,3 @@
-"""
-Main app setup for my cybersecurity tracker
-Student ID: [Your ID]
-May 17, 2025
-"""
-
 from flask import Flask, render_template
 from config import config
 from app.models import db

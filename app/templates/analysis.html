@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "macros/components.html" import severity_badge, progress_bar %}
 
 {% block page_title %}Attack Analysis{% endblock %}
 
@@ -31,16 +32,7 @@
                                     <td>{{ attack_type.AttackType }}</td>
                                     <td>{{ attack_type.count }}</td>
                                     <td style="width: 50%;">
-                                        <div class="progress">
-                                            <div class="progress-bar bg-primary" 
-                                                 role="progressbar" 
-                                                 style="width: {{ (attack_type.count / attack_types|map(attribute='count')|max * 100)|round }}%"
-                                                 aria-valuenow="{{ attack_type.count }}"
-                                                 aria-valuemin="0"
-                                                 aria-valuemax="{{ attack_types|map(attribute='count')|max }}">
-                                                {{ (attack_type.count / attack_types|map(attribute='count')|max * 100)|round }}%
-                                            </div>
-                                        </div>
+                                        {{ progress_bar(attack_type.count, attack_types|map(attribute='count')|max, "primary") }}
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -69,27 +61,16 @@
                             <tbody>
                                 {% for severity in severity_dist %}
                                 <tr>
-                                    <td>
-                                        <span class="badge badge-{{ 'danger' if severity.AttackSeverity == 'High' 
-                                            else 'warning' if severity.AttackSeverity == 'Medium' 
-                                            else 'success' }}">
-                                            {{ severity.AttackSeverity }}
-                                        </span>
-                                    </td>
+                                    <td>{{ severity_badge(severity.AttackSeverity) }}</td>
                                     <td>{{ severity.count }}</td>
                                     <td style="width: 50%;">
-                                        <div class="progress">
-                                            <div class="progress-bar bg-{{ 'danger' if severity.AttackSeverity == 'High' 
-                                                else 'warning' if severity.AttackSeverity == 'Medium' 
-                                                else 'success' }}"
-                                                 role="progressbar" 
-                                                 style="width: {{ (severity.count / severity_dist|map(attribute='count')|max * 100)|round }}%"
-                                                 aria-valuenow="{{ severity.count }}"
-                                                 aria-valuemin="0"
-                                                 aria-valuemax="{{ severity_dist|map(attribute='count')|max }}">
-                                                {{ (severity.count / severity_dist|map(attribute='count')|max * 100)|round }}%
-                                            </div>
-                                        </div>
+                                        {{ progress_bar(
+                                            severity.count, 
+                                            severity_dist|map(attribute='count')|max,
+                                            'danger' if severity.AttackSeverity == 'High' 
+                                            else 'warning' if severity.AttackSeverity == 'Medium' 
+                                            else 'success'
+                                        ) }}
                                     </td>
                                 </tr>
                                 {% endfor %}

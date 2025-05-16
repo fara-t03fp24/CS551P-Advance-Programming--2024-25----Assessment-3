@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "macros/components.html" import severity_badge, stats_card, pagination, data_table %}
 
 {% block page_title %}Dashboard{% endblock %}
 
@@ -11,36 +12,16 @@
     
     <div class="row mb-4">
         <div class="col-md-3">
-            <div class="card bg-primary text-white">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Total Events</h5>
-                    <p class="h2">{{ stats.total_events }}</p>
-                </div>
-            </div>
+            {{ stats_card("Total Events", stats.total_events, "primary") }}
         </div>
         <div class="col-md-3">
-            <div class="card bg-danger text-white">
-                <div class="card-body text-center">
-                    <h5 class="card-title">High Severity</h5>
-                    <p class="h2">{{ stats.high_severity }}</p>
-                </div>
-            </div>
+            {{ stats_card("High Severity", stats.high_severity, "danger") }}
         </div>
         <div class="col-md-3">
-            <div class="card bg-warning">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Medium Severity</h5>
-                    <p class="h2">{{ stats.medium_severity }}</p>
-                </div>
-            </div>
+            {{ stats_card("Medium Severity", stats.medium_severity, "warning") }}
         </div>
         <div class="col-md-3">
-            <div class="card bg-success text-white">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Low Severity</h5>
-                    <p class="h2">{{ stats.low_severity }}</p>
-                </div>
-            </div>
+            {{ stats_card("Low Severity", stats.low_severity, "success") }}
         </div>
     </div>
 
@@ -70,13 +51,7 @@
                                     <td>{{ event.SourceIP }}</td>
                                     <td>{{ event.DestinationIP }}</td>
                                     <td>{{ event.AttackType }}</td>
-                                    <td>
-                                        <span class="badge badge-{{ 'danger' if event.AttackSeverity == 'High' 
-                                            else 'warning' if event.AttackSeverity == 'Medium' 
-                                            else 'success' }}">
-                                            {{ event.AttackSeverity }}
-                                        </span>
-                                    </td>
+                                    <td>{{ severity_badge(event.AttackSeverity) }}</td>
                                     <td>
                                         <a href="{{ url_for('main.event_detail', event_id=event.EventID) }}" 
                                            class="btn btn-sm btn-outline-primary">
@@ -90,33 +65,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center mb-0">
-                            {% if events.has_prev %}
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ url_for('main.index', page=events.prev_num) }}">&laquo; Previous</a>
-                                </li>
-                            {% else %}
-                                <li class="page-item disabled">
-                                    <span class="page-link">&laquo; Previous</span>
-                                </li>
-                            {% endif %}
-                            
-                            <li class="page-item disabled">
-                                <span class="page-link">Page {{ events.page }} of {{ events.pages }}</span>
-                            </li>
-                            
-                            {% if events.has_next %}
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ url_for('main.index', page=events.next_num) }}">Next &raquo;</a>
-                                </li>
-                            {% else %}
-                                <li class="page-item disabled">
-                                    <span class="page-link">Next &raquo;</span>
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </nav>
+                    {{ pagination(events, 'main.index') }}
                 </div>
             </div>
         </div>
