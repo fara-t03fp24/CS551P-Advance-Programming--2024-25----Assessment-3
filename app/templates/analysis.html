@@ -1,72 +1,103 @@
 {% extends "base.html" %}
 
-{% block title %}Cybersecurity Events Analysis{% endblock %}
+{% block page_title %}Attack Analysis{% endblock %}
 
-{% block content %}
-    <h1>Attack Analysis</h1>
+{% block page_content %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-4">Attack Analysis</h1>
+        </div>
+    </div>
     
-    <div class="analysis-section">
-        <h2>Attack Type Distribution</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Attack Type</th>
-                    <th>Count</th>
-                    <th>Distribution</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for attack_type in attack_types %}
-                <tr>
-                    <td>{{ attack_type.AttackType }}</td>
-                    <td>{{ attack_type.count }}</td>
-                    <td>
-                        <div class="bar-chart" style="width: {{ (attack_type.count / attack_types|map(attribute='count')|max * 100)|round }}%; background-color: #007bff;">&nbsp;</div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="h5 mb-0">Attack Type Distribution</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Attack Type</th>
+                                    <th>Count</th>
+                                    <th>Distribution</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for attack_type in attack_types %}
+                                <tr>
+                                    <td>{{ attack_type.AttackType }}</td>
+                                    <td>{{ attack_type.count }}</td>
+                                    <td style="width: 50%;">
+                                        <div class="progress">
+                                            <div class="progress-bar bg-primary" 
+                                                 role="progressbar" 
+                                                 style="width: {{ (attack_type.count / attack_types|map(attribute='count')|max * 100)|round }}%"
+                                                 aria-valuenow="{{ attack_type.count }}"
+                                                 aria-valuemin="0"
+                                                 aria-valuemax="{{ attack_types|map(attribute='count')|max }}">
+                                                {{ (attack_type.count / attack_types|map(attribute='count')|max * 100)|round }}%
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <div class="analysis-section">
-        <h2>Severity Distribution</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Severity Level</th>
-                    <th>Count</th>
-                    <th>Distribution</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for severity in severity_dist %}
-                <tr>
-                    <td>{{ severity.AttackSeverity }}</td>
-                    <td>{{ severity.count }}</td>
-                    <td>
-                        <div class="bar-chart" 
-                             style="width: {{ (severity.count / severity_dist|map(attribute='count')|max * 100)|round }}%; 
-                                    background-color: {% if severity.AttackSeverity == 'High' %}#dc3545
-                                                    {% elif severity.AttackSeverity == 'Medium' %}#ffc107
-                                                    {% else %}#28a745{% endif %};">
-                            &nbsp;
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h2 class="h5 mb-0">Severity Distribution</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Severity Level</th>
+                                    <th>Count</th>
+                                    <th>Distribution</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for severity in severity_dist %}
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-{{ 'danger' if severity.AttackSeverity == 'High' 
+                                            else 'warning' if severity.AttackSeverity == 'Medium' 
+                                            else 'success' }}">
+                                            {{ severity.AttackSeverity }}
+                                        </span>
+                                    </td>
+                                    <td>{{ severity.count }}</td>
+                                    <td style="width: 50%;">
+                                        <div class="progress">
+                                            <div class="progress-bar bg-{{ 'danger' if severity.AttackSeverity == 'High' 
+                                                else 'warning' if severity.AttackSeverity == 'Medium' 
+                                                else 'success' }}"
+                                                 role="progressbar" 
+                                                 style="width: {{ (severity.count / severity_dist|map(attribute='count')|max * 100)|round }}%"
+                                                 aria-valuenow="{{ severity.count }}"
+                                                 aria-valuemin="0"
+                                                 aria-valuemax="{{ severity_dist|map(attribute='count')|max }}">
+                                                {{ (severity.count / severity_dist|map(attribute='count')|max * 100)|round }}%
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <style>
-        .analysis-section {
-            margin: 2rem 0;
-        }
-        .bar-chart {
-            height: 20px;
-            min-width: 2%;
-            display: inline-block;
-        }
-    </style>
 {% endblock %}

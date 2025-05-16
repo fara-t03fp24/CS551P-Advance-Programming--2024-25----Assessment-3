@@ -1,0 +1,213 @@
+/* Base styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 90%;
+    margin: auto;
+    padding: 1rem;
+}
+
+/* Navigation styles */
+.nav {
+    background: #333;
+    color: white;
+    padding: 1rem;
+}
+
+.nav a {
+    color: white;
+    text-decoration: none;
+    margin-right: 1rem;
+}
+
+/* Dashboard stats */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.stat-card {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    text-align: center;
+}
+
+/* Table styles */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+.table th, 
+.table td {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    text-align: left;
+}
+
+/* Pagination */
+.pagination {
+    margin: 1rem 0;
+}
+
+.pagination a {
+    padding: 0.5rem;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    margin: 0 0.2rem;
+}
+
+/* Alert messages */
+.alert {
+    padding: 1rem;
+    margin: 1rem 0;
+    border: 1px solid transparent;
+}
+
+.alert-error {
+    background-color: #fee;
+    border-color: #faa;
+    color: #a00;
+}
+
+/* Analysis page */
+.analysis-section {
+    margin: 2rem 0;
+}
+
+.bar-chart {
+    height: 20px;
+    min-width: 2%;
+    display: inline-block;
+}
+
+/* Bar chart colors */
+.bar-chart.attack {
+    background-color: #007bff;
+}
+
+.bar-chart.severity-high {
+    background-color: #dc3545;
+}
+
+.bar-chart.severity-medium {
+    background-color: #ffc107;
+}
+
+.bar-chart.severity-low {
+    background-color: #28a745;
+}
+
+/* Actions and buttons */
+.button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    background: #333;
+    color: white;
+    border-radius: 3px;
+}
+
+/* Card hover effects */
+.card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Custom progress bar styling */
+.progress {
+    height: 20px;
+    border-radius: 10px;
+}
+
+.progress-bar {
+    transition: width 0.6s ease;
+}
+
+/* Badge enhancements */
+.badge {
+    padding: 0.5em 0.8em;
+    font-weight: 500;
+}
+
+/* Table improvements */
+.table-hover tbody tr:hover {
+    background-color: rgba(0,123,255,0.05);
+}
+
+/* Card header improvements */
+.card-header {
+    border-bottom: 0;
+    font-weight: 500;
+}
+
+/* Stats card specific styles */
+.card .h2 {
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: 0;
+}
+
+.card-title {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Navigation enhancements */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Button enhancements */
+.btn {
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    padding: 0.5rem 1rem;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: white;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .card .h2 {
+        font-size: 2rem;
+    }
+    
+    .display-4 {
+        font-size: 2.5rem;
+    }
+    
+    .table-responsive {
+        margin: 0 -1rem;
+    }
+}
+
+/* Accessibility improvements */
+.progress {
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.badge {
+    font-size: 85%;
+}

@@ -1,57 +1,74 @@
 {% extends "base.html" %}
 
-{% block title %}Event Details - {{ event.EventID }}{% endblock %}
+{% block page_title %}Event Details - {{ event.EventID }}{% endblock %}
 
-{% block content %}
-    <h1>Event Details</h1>
-    
-    <div class="event-details">
-        <h2>Event Information</h2>
-        <table class="table">
-            <tr>
-                <th>Event ID</th>
-                <td>{{ event.EventID }}</td>
-            </tr>
-            <tr>
-                <th>Source IP</th>
-                <td>{{ event.SourceIP }}</td>
-            </tr>
-            <tr>
-                <th>Destination IP</th>
-                <td>{{ event.DestinationIP }}</td>
-            </tr>
-            <tr>
-                <th>Attack Type</th>
-                <td>{{ event.AttackType }}</td>
-            </tr>
-            <tr>
-                <th>Severity</th>
-                <td>{{ event.AttackSeverity }}</td>
-            </tr>
-        </table>
+{% block page_content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h2">Event Details</h1>
+                <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
 
-        <h2>Response Details</h2>
-        {% if event.response %}
-        <table class="table">
-            <tr>
-                <th>Data Exfiltrated</th>
-                <td>{{ event.response.DataExfiltrated }}</td>
-            </tr>
-            <tr>
-                <th>Threat Intelligence</th>
-                <td>{{ event.response.ThreatIntelligence }}</td>
-            </tr>
-            <tr>
-                <th>Response Action</th>
-                <td>{{ event.response.ResponseAction }}</td>
-            </tr>
-        </table>
-        {% else %}
-        <p>No response information available for this event.</p>
-        {% endif %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="h5 mb-0">Event Information</h2>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Event ID</dt>
+                        <dd class="col-sm-8">{{ event.EventID }}</dd>
 
-        <div class="actions">
-            <a href="{{ url_for('main.index') }}" class="button">Back to Dashboard</a>
+                        <dt class="col-sm-4">Source IP</dt>
+                        <dd class="col-sm-8">{{ event.SourceIP }}</dd>
+
+                        <dt class="col-sm-4">Destination IP</dt>
+                        <dd class="col-sm-8">{{ event.DestinationIP }}</dd>
+
+                        <dt class="col-sm-4">Attack Type</dt>
+                        <dd class="col-sm-8">{{ event.AttackType }}</dd>
+
+                        <dt class="col-sm-4">Severity</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge badge-{{ 'danger' if event.AttackSeverity == 'High' 
+                                else 'warning' if event.AttackSeverity == 'Medium' 
+                                else 'success' }}">
+                                {{ event.AttackSeverity }}
+                            </span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h2 class="h5 mb-0">Response Details</h2>
+                </div>
+                <div class="card-body">
+                    {% if event.response %}
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Data Exfiltrated</dt>
+                        <dd class="col-sm-8">{{ event.response.DataExfiltrated or 'N/A' }}</dd>
+
+                        <dt class="col-sm-4">Threat Intelligence</dt>
+                        <dd class="col-sm-8">{{ event.response.ThreatIntelligence or 'N/A' }}</dd>
+
+                        <dt class="col-sm-4">Response Action</dt>
+                        <dd class="col-sm-8">{{ event.response.ResponseAction or 'N/A' }}</dd>
+                    </dl>
+                    {% else %}
+                    <p class="text-muted mb-0">No response information available for this event.</p>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

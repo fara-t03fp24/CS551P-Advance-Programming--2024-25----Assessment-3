@@ -1,6 +1,9 @@
 from flask import Flask
 from config import config
 from app.models import db
+from flask_bootstrap import Bootstrap
+
+bootstrap = Bootstrap()
 
 def create_app(config_name='default'):
     """Application factory function"""
@@ -11,6 +14,7 @@ def create_app(config_name='default'):
     
     # Initialize extensions
     db.init_app(app)
+    bootstrap.init_app(app)
     
     # Register blueprints
     from app.routes.main import main_bp

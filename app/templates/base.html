@@ -1,92 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Cybersecurity Events Tracker{% endblock %}</title>
-    <style>
-        /* Simple CSS without JavaScript dependencies */
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 90%;
-            margin: auto;
-            padding: 1rem;
-        }
-        .nav {
-            background: #333;
-            color: white;
-            padding: 1rem;
-        }
-        .nav a {
-            color: white;
-            text-decoration: none;
-            margin-right: 1rem;
-        }
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-        .stat-card {
-            border: 1px solid #ddd;
-            padding: 1rem;
-            text-align: center;
-        }
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-        }
-        .table th, .table td {
-            border: 1px solid #ddd;
-            padding: 0.5rem;
-            text-align: left;
-        }
-        .pagination {
-            margin: 1rem 0;
-        }
-        .pagination a {
-            padding: 0.5rem;
-            text-decoration: none;
-            border: 1px solid #ddd;
-            margin: 0 0.2rem;
-        }
-        .alert {
-            padding: 1rem;
-            margin: 1rem 0;
-            border: 1px solid transparent;
-        }
-        .alert-error {
-            background-color: #fee;
-            border-color: #faa;
-            color: #a00;
-        }
-    </style>
-</head>
-<body>
-    <nav class="nav">
-        <div class="container">
-            <a href="{{ url_for('main.index') }}">Home</a>
-            <a href="{{ url_for('main.analysis') }}">Analysis</a>
-        </div>
-    </nav>
+{% extends "bootstrap/base.html" %}
 
+{% block title %}{% block page_title %}Cybersecurity Events Tracker{% endblock %} - Dashboard{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-
-        {% block content %}{% endblock %}
+        <a class="navbar-brand" href="{{ url_for('main.index') }}">CyberTracker</a>
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="{{ url_for('main.index') }}">Home</a>
+            <a class="nav-item nav-link" href="{{ url_for('main.analysis') }}">Analysis</a>
+        </div>
     </div>
-</body>
-</html>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block page_content %}{% endblock %}
+</div>
+{% endblock %}
