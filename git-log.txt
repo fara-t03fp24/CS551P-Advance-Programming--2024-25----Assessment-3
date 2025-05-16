@@ -1,0 +1,9 @@
+* 8679ca5 : Add AttackType to test response in conftest.py for improved test data consistency
+* 6dc8393 : Update app configuration and modernize SQLAlchemy models
+* 1a2772a : Added comprehensive docstrings and type hints to improve code quality and maintainability
+* 12b3fae : Enhanced templates with reusable macros for components. Improved code maintainability and consistency across all pages.
+* e162a33 : Added comprehensive error handling with custom templates and logging system. Improved .gitignore for better project organization.
+* 6a5a655 : Updated comments in models, routes, config, and main app files
+* b652467 : Refactor templates and styles for improved UI; add Bootstrap integration and enhance event analysis layout
+* f2529be : Fixed model relationships, implemented analysis routes, and added deployment configuration
+* 5de7e67 : Initial commit: Basic Flask application structure with models, routes, templates, and tests
