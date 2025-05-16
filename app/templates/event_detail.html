@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Event Details - {{ event.EventID }}{% endblock %}
+
+{% block content %}
+    <h1>Event Details</h1>
+    
+    <div class="event-details">
+        <h2>Event Information</h2>
+        <table class="table">
+            <tr>
+                <th>Event ID</th>
+                <td>{{ event.EventID }}</td>
+            </tr>
+            <tr>
+                <th>Source IP</th>
+                <td>{{ event.SourceIP }}</td>
+            </tr>
+            <tr>
+                <th>Destination IP</th>
+                <td>{{ event.DestinationIP }}</td>
+            </tr>
+            <tr>
+                <th>Attack Type</th>
+                <td>{{ event.AttackType }}</td>
+            </tr>
+            <tr>
+                <th>Severity</th>
+                <td>{{ event.AttackSeverity }}</td>
+            </tr>
+        </table>
+
+        <h2>Response Details</h2>
+        {% if event.response %}
+        <table class="table">
+            <tr>
+                <th>Data Exfiltrated</th>
+                <td>{{ event.response.DataExfiltrated }}</td>
+            </tr>
+            <tr>
+                <th>Threat Intelligence</th>
+                <td>{{ event.response.ThreatIntelligence }}</td>
+            </tr>
+            <tr>
+                <th>Response Action</th>
+                <td>{{ event.response.ResponseAction }}</td>
+            </tr>
+        </table>
+        {% else %}
+        <p>No response information available for this event.</p>
+        {% endif %}
+
+        <div class="actions">
+            <a href="{{ url_for('main.index') }}" class="button">Back to Dashboard</a>
+        </div>
+    </div>
+{% endblock %}
