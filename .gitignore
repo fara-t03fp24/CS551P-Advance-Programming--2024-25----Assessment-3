@@ -23,25 +23,54 @@ wheels/
 # Virtual Environment
 venv/
 ENV/
+.env
+.venv
 env/
+.env.*
 
 # IDE
 .idea/
 .vscode/
 *.swp
 *.swo
+.project
+.pydevproject
+.settings/
 
 # Flask
 instance/
 .webassets-cache
+flask_session/
 
 # SQLite
+*.db
 *.db-journal
+*.sqlite3
 
-# Coverage
+# Coverage and Testing
 .coverage
+coverage.xml
 htmlcov/
+.pytest_cache/
+.tox/
+nosetests.xml
 
-# Environment variables
-.env
-.env.*
+# Logs
+*.log
+logs/
+log/
+
+# Documentation
+docs/_build/
+docs/build/
+
+# OS specific
+.DS_Store
+Thumbs.db
+*.bak
+*.tmp
+*~
+
+# Project specific
+migrations/versions/*
+!migrations/versions/.gitkeep

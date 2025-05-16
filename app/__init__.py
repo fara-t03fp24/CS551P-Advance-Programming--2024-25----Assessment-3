@@ -1,7 +1,14 @@
-from flask import Flask
+"""
+Main app setup for my cybersecurity tracker
+Student ID: [Your ID]
+May 17, 2025
+"""
+
+from flask import Flask, render_template
 from config import config
 from app.models import db
 from flask_bootstrap import Bootstrap
+from app.utils.logger import logger
 
 # Set up Bootstrap for nice looking pages
 bootstrap = Bootstrap()
@@ -30,17 +37,20 @@ def create_app(config_name='default'):
     @app.errorhandler(404)
     def not_found_error(error):
         """Show nice message when page isn't found"""
-        return {'error': 'Resource not found'}, 404
+        logger.warning(f"Page not found: {error}")
+        return render_template('errors/404.html'), 404
 
     @app.errorhandler(500)
     def internal_error(error):
         """Handle server errors - cancels any database changes"""
+        logger.error(f"Server error: {error}", exc_info=True)
         db.session.rollback()
-        return {'error': 'Internal server error'}, 500
+        return render_template('errors/500.html'), 500
 
     @app.errorhandler(400)
     def bad_request_error(error):
         """Handle bad request errors"""
-        return {'error': 'Bad request'}, 400
+        logger.warning(f"Bad request: {error}")
+        return render_template('errors/400.html'), 400
 
     return app
