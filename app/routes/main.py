@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, abort
-from app.models import CyberEvent, EventResponse
-from sqlalchemy import desc
+from app.models import CyberEvent, EventResponse, db
+from sqlalchemy import desc, func
 
 main_bp = Blueprint('main', __name__)
 
@@ -34,16 +34,16 @@ def event_detail(event_id):
 @main_bp.route('/analysis')
 def analysis():
     """Analysis page showing attack statistics"""
-    # Get attack type distribution
+    # Get attack type distribution using func for aggregation
     attack_types = db.session.query(
         CyberEvent.AttackType,
-        db.func.count(CyberEvent.EventID).label('count')
+        func.count(CyberEvent.EventID).label('count')
     ).group_by(CyberEvent.AttackType).all()
     
     # Get severity distribution
     severity_dist = db.session.query(
         CyberEvent.AttackSeverity,
-        db.func.count(CyberEvent.EventID).label('count')
+        func.count(CyberEvent.EventID).label('count')
     ).group_by(CyberEvent.AttackSeverity).all()
     
     return render_template('analysis.html', 

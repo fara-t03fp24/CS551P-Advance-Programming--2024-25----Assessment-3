@@ -12,8 +12,8 @@ class CyberEvent(db.Model):
     AttackType = db.Column(db.String(50))
     AttackSeverity = db.Column(db.String(20))
     
-    # Relationship with EventResponse
-    response = db.relationship('EventResponse', backref='event', lazy=True)
+    # One-to-one relationship with EventResponse
+    response = db.relationship('EventResponse', backref='event', uselist=False)
 
     def __repr__(self):
         return f'<CyberEvent {self.EventID}>'
