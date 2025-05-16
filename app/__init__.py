@@ -1,4 +1,4 @@
-from typing import Union, Dict, Any, Optional
+from typing import Union, Dict, Any, Optional, Tuple
 from flask import Flask, render_template, Response
 from config import config
 from app.models import db
@@ -43,7 +43,7 @@ def create_app(config_name: str = 'default') -> Flask:
     
     # Add handlers for when things go wrong
     @app.errorhandler(404)
-    def not_found_error(error: Any) -> Union[Response, tuple[str, int]]:
+    def not_found_error(error: Any) -> Union[Response, Tuple[str, int]]:
         """Handle 404 Not Found errors.
         
         Args:
@@ -56,7 +56,7 @@ def create_app(config_name: str = 'default') -> Flask:
         return render_template('errors/404.html'), 404
 
     @app.errorhandler(500)
-    def internal_error(error: Any) -> Union[Response, tuple[str, int]]:
+    def internal_error(error: Any) -> Union[Response, Tuple[str, int]]:
         """Handle 500 Internal Server errors.
         
         Args:
@@ -74,7 +74,7 @@ def create_app(config_name: str = 'default') -> Flask:
         return render_template('errors/500.html'), 500
 
     @app.errorhandler(400)
-    def bad_request_error(error: Any) -> Union[Response, tuple[str, int]]:
+    def bad_request_error(error: Any) -> Union[Response, Tuple[str, int]]:
         """Handle 400 Bad Request errors.
         
         Args:
