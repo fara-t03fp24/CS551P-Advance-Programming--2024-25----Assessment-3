@@ -1,28 +1,42 @@
+"""Route handlers for the cybersecurity events tracker.
+
+This module contains all the route handlers for the main application pages,
+including the dashboard, event details, and analysis views.
+
+Author: [Your Name]
+Student ID: [Your ID]
+Date: May 17, 2025
+"""
+from typing import Dict, Any, List, Tuple, Union
 from flask import Blueprint, render_template, request, abort
 from app.models import CyberEvent, EventResponse, db
 from sqlalchemy import desc, func
+from werkzeug.wrappers import Response
 
 # Blueprint helps organize the routes better
 main_bp = Blueprint('main', __name__)
 
 @main_bp.route('/')
-def index():
-    """Homepage - shows dashboard with stats and recent events.
+def index() -> str:
+    """Display the main dashboard with event listing and statistics.
     
-    I added pagination because we have lots of events and loading
-    them all at once would be too slow!
+    Returns:
+        str: Rendered HTML template for the dashboard page
+        
+    Note:
+        This view implements pagination with 50 items per page and
+        shows summary statistics for events by severity level.
     """
-    # Get which page we want to show (starts at page 1)
-    page = request.args.get('page', 1, type=int)
-    per_page = 50  # Show 50 events per page - not too many, not too few
+    page: int = request.args.get('page', 1, type=int)
+    per_page: int = 50
     
-    # Get a page of events, newest first
+    # Get events with pagination
     events = CyberEvent.query.order_by(
-        desc(CyberEvent.EventID)  # Newest events on top
+        desc(CyberEvent.EventID)
     ).paginate(page=page, per_page=per_page, error_out=False)
     
-    # Count different types of events for the dashboard cards
-    stats = {
+    # Get statistics for the dashboard
+    stats: Dict[str, int] = {
         'total_events': CyberEvent.query.count(),
         'high_severity': CyberEvent.query.filter_by(AttackSeverity='High').count(),
         'medium_severity': CyberEvent.query.filter_by(AttackSeverity='Medium').count(),
@@ -32,29 +46,41 @@ def index():
     return render_template('index.html', events=events, stats=stats)
 
 @main_bp.route('/event/<event_id>')
-def event_detail(event_id):
-    """Shows all details about one specific event.
+def event_detail(event_id: str) -> Union[str, Tuple[Dict[str, str], int]]:
+    """Display detailed information about a specific event.
     
-    Uses get_or_404 to show a nice error page if event isn't found.
+    Args:
+        event_id: The unique identifier of the event to display
+        
+    Returns:
+        str: Rendered HTML template for the event detail page
+        tuple: Error response if event not found
+        
+    Raises:
+        404: If the event_id doesn't exist in the database
     """
     event = CyberEvent.query.get_or_404(event_id)
     return render_template('event_detail.html', event=event)
 
 @main_bp.route('/analysis')
-def analysis():
-    """Shows charts and stats about all our security events.
+def analysis() -> str:
+    """Display analysis page showing attack statistics.
     
-    Uses SQLAlchemy's func.count to count things directly in the database
-    instead of loading everything into Python first - way faster!
+    Returns:
+        str: Rendered HTML template for the analysis page
+        
+    Note:
+        This view shows distributions of attack types and severity levels
+        using database aggregation for efficient processing.
     """
-    # Count how many of each attack type we have
-    attack_types = db.session.query(
+    # Get attack type distribution using func for aggregation
+    attack_types: List[Any] = db.session.query(
         CyberEvent.AttackType,
         func.count(CyberEvent.EventID).label('count')
     ).group_by(CyberEvent.AttackType).all()
     
-    # Count how many High/Medium/Low severity events
-    severity_dist = db.session.query(
+    # Get severity distribution
+    severity_dist: List[Any] = db.session.query(
         CyberEvent.AttackSeverity,
         func.count(CyberEvent.EventID).label('count')
     ).group_by(CyberEvent.AttackSeverity).all()

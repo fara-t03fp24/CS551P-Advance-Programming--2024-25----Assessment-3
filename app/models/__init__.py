@@ -1,42 +1,67 @@
+"""Database models for the cybersecurity events tracker.
+
+This module defines the SQLAlchemy models for storing cybersecurity events
+and their corresponding response actions.
+
+Author: [Your Name]
+Student ID: [Your ID]
+Date: May 17, 2025
+"""
+from __future__ import annotations
+from typing import Optional
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 db = SQLAlchemy()
 
 class CyberEvent(db.Model):
-    """Stores info about each security event.
+    """Model for cybersecurity events data.
     
-    I split this into two tables (events and responses) because it's cleaner
-    and lets us add response info later if we need to.
+    Attributes:
+        EventID: Unique identifier for the event
+        SourceIP: IP address where the attack originated
+        DestinationIP: Target IP address of the attack
+        AttackType: Type of cyber attack
+        AttackSeverity: Severity level (High/Medium/Low)
+        response: Related response action details
     """
     __tablename__ = 'data'
     
-    # Using strings for all IDs and IPs to keep it simple
-    EventID = db.Column(db.String(50), primary_key=True)  # Primary key for linking tables
-    SourceIP = db.Column(db.String(15))     # Where the attack came from
-    DestinationIP = db.Column(db.String(15)) # Target of the attack
-    AttackType = db.Column(db.String(50))    # What kind of attack it was
-    AttackSeverity = db.Column(db.String(20)) # How bad the attack was (High/Medium/Low)
+    EventID: str = db.Column(db.String(50), primary_key=True)
+    SourceIP: str = db.Column(db.String(15))
+    DestinationIP: str = db.Column(db.String(15))
+    AttackType: str = db.Column(db.String(50))
+    AttackSeverity: str = db.Column(db.String(20))
+    CreatedAt: datetime = db.Column(db.DateTime, default=datetime.utcnow)
+    UpdatedAt: datetime = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
-    # Links to the response info - one event has one response
-    response = db.relationship('EventResponse', backref='event', uselist=False)
+    # One-to-one relationship with EventResponse
+    response: Optional[EventResponse] = db.relationship('EventResponse', backref='event', uselist=False)
 
-    def __repr__(self):
-        # Just for debugging - shows event ID when we print it
+    def __repr__(self) -> str:
+        """String representation of the event."""
         return f'<CyberEvent {self.EventID}>'
 
 class EventResponse(db.Model):
-    """Stores how we responded to each security event.
+    """Model for event response data.
     
-    This table has all the response info - separate from the event details
-    to keep things organized. EventID links it back to the main event.
+    Attributes:
+        EventID: Foreign key linking to CyberEvent
+        AttackType: Type of attack identified
+        DataExfiltrated: Description of any data stolen
+        ThreatIntelligence: Intelligence gathered about the threat
+        ResponseAction: Actions taken to address the threat
     """
     __tablename__ = 'response'
     
-    EventID = db.Column(db.String(50), db.ForeignKey('data.EventID'), primary_key=True)
-    AttackType = db.Column(db.String(50))
-    DataExfiltrated = db.Column(db.String(100))   # What data was taken
-    ThreatIntelligence = db.Column(db.String(200)) # What we know about the threat
-    ResponseAction = db.Column(db.String(200))      # What we did about it
+    EventID: str = db.Column(db.String(50), db.ForeignKey('data.EventID'), primary_key=True)
+    AttackType: str = db.Column(db.String(50))
+    DataExfiltrated: Optional[str] = db.Column(db.String(100))
+    ThreatIntelligence: Optional[str] = db.Column(db.String(200))
+    ResponseAction: Optional[str] = db.Column(db.String(200))
+    CreatedAt: datetime = db.Column(db.DateTime, default=datetime.utcnow)
+    UpdatedAt: datetime = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """String representation of the response."""
         return f'<EventResponse {self.EventID}>'
