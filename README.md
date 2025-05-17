@@ -1,131 +1,108 @@
-# Cybersecurity Events Tracker
+# Cybersecurity Events Tracker Application
 
-A Flask-based web application for tracking and analyzing cybersecurity events. This application allows users to view, analyze, and monitor cybersecurity incidents and their corresponding responses.
+## Student Information
+- **Module:** CS551P Advanced Programming (2024-25)
+- **Assessment:** 3
+- **Student ID:** 52427848
 
-## Features
+## Project Overview
+I developed a web-based application using Flask framework to track and analyze cybersecurity events. This project demonstrates my understanding of advanced programming concepts, database management, and web development principles learned during the CS551P module.
 
-- Dashboard showing recent cybersecurity events
-- Detailed view of individual security incidents
-- Statistical analysis of attack types and severity levels
-- Linked data between events and response actions
-- Error handling and user-friendly interface
-- No JavaScript dependencies - pure Flask and Python
+## Key Features
+1. **Interactive Dashboard**
+   - Real-time display of cybersecurity events
+   - Quick statistics showing total events and severity distributions
+   - Responsive design for both desktop and mobile viewing
 
-## Technical Stack
+2. **Event Management**
+   - Detailed view of individual security incidents
+   - Tracking of source/destination IPs
+   - Attack type and severity classification
 
-- Python 3.8+
-- Flask 3.0.0
-- SQLite3 Database
-- Flask-SQLAlchemy for ORM
-- pytest for testing
+3. **Analysis Tools**
+   - Statistical breakdown of attack types
+   - Severity level distribution graphs
+   - Visual representation using progress bars
 
-## Installation
+4. **Data Organization**
+   - Event response tracking
+   - Threat intelligence information
+   - Automated data exfiltration logging
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd <repository-name>
-```
+## Technical Implementation
 
-2. Create a virtual environment and activate it:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
+### Technology Stack
+- **Backend:** Python 3.8+ with Flask 3.0.0
+- **Database:** SQLite3 with SQLAlchemy ORM
+- **Frontend:** Bootstrap CSS framework
+- **Testing:** pytest framework
+- **Version Control:** Git
 
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+### Database Design
+I implemented two main tables:
 
-4. Run the application:
-```bash
-python run.py
-```
-
-The application will be available at `http://localhost:5000`
-
-## Project Structure
-
-```
-.
-├── app/
-│   ├── __init__.py
-│   ├── models/
-│   ├── routes/
-│   ├── templates/
-│   ├── static/
-│   └── utils/
-├── tests/
-├── migrations/
-├── config.py
-├── run.py
-└── requirements.txt
-```
-
-## Database Schema
-
-The application uses two linked tables:
-
-1. `data` table:
+1. **data table**
+   ```
    - EventID (Primary Key)
    - SourceIP
    - DestinationIP
    - AttackType
    - AttackSeverity
+   ```
 
-2. `response` table:
+2. **response table**
+   ```
    - EventID (Foreign Key)
    - AttackType
    - DataExfiltrated
    - ThreatIntelligence
    - ResponseAction
+   ```
 
-## Testing
-
-Run the test suite using:
-```bash
-pytest
+## Project Structure
+```
+.
+├── app/                  # Main application directory
+│   ├── models/          # Database models
+│   ├── routes/          # URL routing handlers
+│   ├── templates/       # HTML templates
+│   ├── static/          # CSS and static files
+│   └── utils/           # Utility functions
+├── tests/               # Test cases
+├── migrations/          # Database migrations
+└── config.py           # Configuration settings
 ```
 
-For test coverage report:
+## Setup Instructions
+
+1. Clone the repository and create virtual environment:
+   ```bash
+   git clone <repository-url>
+   cd <repository-directory>
+   python -m venv venv
+   source venv/bin/activate  # On Windows use: venv\Scripts\activate
+   ```
+
+2. Install required packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Run the application:
+   ```bash
+   python run.py
+   ```
+
+4. Access the application at: http://localhost:3000
+
+## Testing
+I implemented comprehensive tests to ensure application reliability:
+
 ```bash
+# Run all tests
+pytest
+
+# Generate coverage report
 coverage run -m pytest
 coverage report
 ```
-
-## Deployment
-
-The application is deployed on Render and can be accessed at: [Your-Render-URL]
-
-### Deployment Steps on Render:
-1. Create a new Web Service on Render
-2. Connect your GitHub repository
-3. Set the following:
-   - Build Command: `pip install -r requirements.txt`
-   - Start Command: `gunicorn run:app`
-
-## Development Process
-
-This project was developed following these key principles:
-- Test-Driven Development (TDD)
-- Clean Code practices
-- RESTful design
-- Proper error handling
-- Git version control
-
-## Maintenance
-
-To maintain the application:
-1. Regularly update dependencies
-2. Monitor error logs
-3. Back up the database
-4. Run tests before deploying updates
-
-## License
-
-This project is created for educational purposes as part of the CS551P Advanced Programming course at the University.
-
-## Author
-
-Student ID: 52427848
